@@ -23,9 +23,8 @@
 include_recipe 'openresty::ohai_plugin'
 include_recipe 'openresty::commons_user'
 include_recipe 'openresty::commons_dir'
-include_recipe 'openresty::commons_script'
+include_recipe 'openresty::log_rotate'
 include_recipe 'openresty::commons_build'
-include_recipe 'openresty::commons_conf'
 include_recipe 'openresty::commons_cleanup'
 if node['openresty']['service']['recipe']
   include_recipe(node['openresty']['service']['recipe'])

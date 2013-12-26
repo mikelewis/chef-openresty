@@ -24,5 +24,4 @@
 user node['openresty']['user'] do
   system true
   shell '/bin/false'
-  home '/var/www'
 end

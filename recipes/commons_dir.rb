@@ -43,13 +43,6 @@ directory node['openresty']['cache_dir'] do
   recursive true
 end
 
-directory '/var/www' do
-  owner node['openresty']['user']
-  group node['openresty']['group']
-  mode 00755
-  action :create
-end
-
 %w(client_temp proxy_temp fastcgi_temp uwsgi_temp scgi_temp).each do |leaf|
   directory File.join(node['openresty']['cache_dir'], leaf) do
     owner node['openresty']['user']

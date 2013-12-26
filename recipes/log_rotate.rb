@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: openresty
-# Recipe:: commons_script
+# Recipe:: commons_conf
 #
 # Author:: Panagiotis Papadomitsos (<pj@ezgr.net>)
 #
@@ -20,11 +20,20 @@
 # limitations under the License.
 #
 
-%w(nxensite nxdissite).each do |nxscript|
-  template "/usr/sbin/#{nxscript}" do
-    source "#{nxscript}.erb"
-    mode 00755
-    owner 'root'
-    group 'root'
+if node['openresty']['logrotate']
+
+  include_recipe 'logrotate'
+
+  # Log rotation
+  logrotate_app 'openresty' do
+    path "#{node['openresty']['log_dir']}/*.log"
+    enable true
+    frequency 'daily'
+    rotate 7
+    cookbook 'logrotate'
+    create "0644 #{node['openresty']['user']} adm"
+    options [ 'missingok', 'delaycompress', 'notifempty', 'compress', 'sharedscripts' ]
+    postrotate "[[ ! -f #{node['openresty']['pid']} ]] || kill -USR1 $(cat #{node['openresty']['pid']})"
   end
+
 end
